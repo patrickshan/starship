@@ -65,11 +65,25 @@ pub fn module<'a>(context: &'a Context) -> Option<Module<'a>> {
             let parsed = StringFormatter::new(config.format).and_then(|formatter| {
                 formatter
                     .map_meta(|variable, _| match variable {
-                        "symbol" => Some(config.symbol),
+                        "symbol" => {
+                            match config.environments.iter().position(|x| kube_ctx.contains(x.name)) {
+                                Some(idx) => Some(config.environments[idx].symbol),
+                                None => Some(config.symbol),
+                            }
+                        },
                         _ => None,
                     })
                     .map_style(|variable| match variable {
-                        "style" => Some(Ok(config.style)),
+                        "style" => {
+                            match config
+                                .environments
+                                .iter()
+                                .position(|x| kube_ctx.contains(x.name))
+                            {
+                                Some(idx) => Some(Ok(config.environments[idx].style)),
+                                None => Some(Ok(config.style)),
+                            }
+                        }
                         _ => None,
                     })
                     .map(|variable| match variable {
