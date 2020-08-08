@@ -10,6 +10,7 @@ pub struct KubernetesConfig<'a> {
     pub style: &'a str,
     pub disabled: bool,
     pub context_aliases: HashMap<String, &'a str>,
+    pub display: Vec<KubernetesDisplayConfig<'a>>,
 }
 
 impl<'a> RootModuleConfig<'a> for KubernetesConfig<'a> {
@@ -20,6 +21,13 @@ impl<'a> RootModuleConfig<'a> for KubernetesConfig<'a> {
             style: "cyan bold",
             disabled: true,
             context_aliases: HashMap::new(),
+            display: vec![],
         }
     }
+}
+
+#[derive(Clone, ModuleConfig)]
+pub struct KubernetesDisplayConfig<'a> {
+    pub context_pattern: regex::Regex,
+    pub style: &'a str,
 }
