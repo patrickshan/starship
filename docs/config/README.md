@@ -1427,6 +1427,11 @@ To enable it, set `disabled` to `false` in your configuration file.
 | `namespace_spaceholder` | `none`                                               | The value to display if no namespace was found.                       |
 | `context_aliases`       |                                                      | Table of context aliases to display.                                  |
 | `disabled`              | `true`                                               | Disables the `kubernetes` module.                                     |
+| `environments`          | `[]`                                                 | Customized styles and symbols for specific contexts.                  |
+
+To customize the style of the module for specific environments, use the following configuration as
+part of the `environments` list:
+
 
 ### Variables
 
@@ -1447,6 +1452,11 @@ To enable it, set `disabled` to `false` in your configuration file.
 [kubernetes]
 format = "on [⛵ $context \\($namespace\\)](dimmed green) "
 disabled = false
+environments = [
+    { name = "production", style = "bright-red", symbol = "☸☁ " },
+    { name = "staging", style = "yellow" },
+    { name = "develop", style = "green" },
+]
 [kubernetes.context_aliases]
 "dev.local.cluster.k8s" = "dev"
 ```
